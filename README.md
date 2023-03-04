@@ -8,3 +8,6 @@ If an ad is playing it mutes the tab
 
 Only the background script can access the chrome.tabs api
 So the hulu-script is sending a message to the background script which handles the muting
+
+
+## TODO add an option to disable (pause) the script 

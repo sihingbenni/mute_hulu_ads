@@ -1,0 +1,23 @@
+{
+    "name": "Mute Hulu Ads",
+    "description": "A Chrome Extension that mutes hulu while an ad is playing.",
+    "version": "0.1",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+          "matches": [
+            "https://www.hulu.com/watch/*"
+          ],
+          "all_frames": true,
+          "js": [
+            "logger.js",
+            "classWatcher.js",
+            "hulu-script.js"
+          ]
+        }
+      ],
+    "permissions": ["storage", "activeTab", "scripting", "notifications", "tabs"]
+  }

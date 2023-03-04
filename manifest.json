@@ -4,7 +4,7 @@
     "version": "0.1",
     "manifest_version": 3,
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "src/background.js"
     },
     "content_scripts": [
         {
@@ -13,9 +13,9 @@
           ],
           "all_frames": true,
           "js": [
-            "logger.js",
-            "classWatcher.js",
-            "hulu-script.js"
+            "src/logger.js",
+            "src/classWatcher.js",
+            "src/hulu-script.js"
           ]
         }
       ],

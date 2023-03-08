@@ -8,21 +8,29 @@ mute_on_urls = {
 
 chrome.tabs.onUpdated.addListener(
     function (tabId, changeInfo, tab) {
-
         // determine from what streaming service this comes
         if (changeInfo.url) {
-            console.log(changeInfo)
-            const url = new URL(changeInfo.url)
-
-            if (mute_on_urls[url.hostname] && url.pathname.match(mute_on_urls[url.hostname])) {
-                console.log(changeInfo)
-                chrome.tabs.sendMessage(tabId, {
-                    message: "Hulu episode selected! start the ad muter!"
-                })
-            }
+            checkIfVideoIsRunning(changeInfo, tabId)
         }
     }
 );
+
+/**
+ * Checks the url of the tab if it contains the relevant path
+ * @param {Tab} tab The Tab object itself
+ * @param {*} tabId Id of the Tab 
+ */
+function checkIfVideoIsRunning(tab, tabId) {
+    console.log("checking if Video is running")
+    const url = new URL(tab.url)
+
+    if (mute_on_urls[url.hostname] && url.pathname.match(mute_on_urls[url.hostname])) {
+        console.log(tab)
+        chrome.tabs.sendMessage(tabId, {
+            message: "Hulu episode selected! start the ad muter!"
+        })
+    }
+}
 
 /**
  * Add message listener.
@@ -32,7 +40,9 @@ chrome.tabs.onUpdated.addListener(
  * Unmute the tab
  */
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-    if (msg.text == "what is my tab_id?") {
+    if (msg.text == "I just opened Hulu!") {
+        checkIfVideoIsRunning(sender.tab, sender.tab.id)
+    } else if (msg.text == "what is my tab_id?") {
         sendResponse({
             tab: sender.tab.id
         });

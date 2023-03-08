@@ -1,4 +1,11 @@
+////////////////////////////////////////////////// run this 
+
 info("Have fun watching Hulu!")
+
+// sending a message to the background.js
+chrome.runtime.sendMessage({
+    text: "I just opened Hulu!"
+})
 
 // listen for the starting Point from 
 chrome.runtime.onMessage.addListener(
@@ -10,6 +17,8 @@ chrome.runtime.onMessage.addListener(
         }
     }
 );
+
+///////////////////////////////////////////////// functions
 
 /**
  * Checks if the dom is ready. 

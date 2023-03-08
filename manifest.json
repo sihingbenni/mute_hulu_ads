@@ -9,7 +9,7 @@
     "content_scripts": [
         {
           "matches": [
-            "https://www.hulu.com/watch/*"
+            "https://www.hulu.com/*"
           ],
           "all_frames": true,
           "js": [

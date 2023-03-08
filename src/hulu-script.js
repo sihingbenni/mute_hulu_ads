@@ -1,6 +1,15 @@
 info("Have fun watching Hulu!")
 
-checkIfReady()
+// listen for the starting Point from 
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        // listen for messages sent from background.js
+        if (request.message === "Hulu episode selected! start the ad muter!") {
+            info("Started watching something!")
+            checkIfReady()
+        }
+    }
+);
 
 /**
  * Checks if the dom is ready. 

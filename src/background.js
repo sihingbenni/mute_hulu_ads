@@ -1,5 +1,28 @@
 console.log("Background running!")
 
+// define regex expression that matches the needed url, so that the ad muter works
+mute_on_urls = {
+    "www.hulu.com": "/watch/*/"
+}
+
+
+chrome.tabs.onUpdated.addListener(
+    function (tabId, changeInfo, tab) {
+
+        // determine from what streaming service this comes
+        if (changeInfo.url) {
+            console.log(changeInfo)
+            const url = new URL(changeInfo.url)
+
+            if (mute_on_urls[url.hostname] && url.pathname.match(mute_on_urls[url.hostname])) {
+                console.log(changeInfo)
+                chrome.tabs.sendMessage(tabId, {
+                    message: "Hulu episode selected! start the ad muter!"
+                })
+            }
+        }
+    }
+);
 
 /**
  * Add message listener.

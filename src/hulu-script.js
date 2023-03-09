@@ -2,6 +2,9 @@
 
 info("Have fun watching Hulu!")
 
+// is the app running?
+let running = false
+
 // sending a message to the background.js
 chrome.runtime.sendMessage({
     text: "I just opened Hulu!"
@@ -10,8 +13,8 @@ chrome.runtime.sendMessage({
 // listen for the starting Point from 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        // listen for messages sent from background.js
-        if (request.message === "Hulu episode selected! start the ad muter!") {
+        // listen for messages sent from background.js if the app is not running already
+        if (!running && request.message === "Hulu episode selected! start the ad muter!") {
             info("Started watching something!")
             checkIfReady()
         }
@@ -32,6 +35,9 @@ function checkIfReady() {
         setTimeout(checkIfReady, 2000)
         return
     }
+
+    // set running Flag
+    running = true
 
     info("Web Player ready!")
     init(web_player_app)

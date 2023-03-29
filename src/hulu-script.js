@@ -50,16 +50,46 @@ function checkIfReady() {
 function init(web_player_app) {
 
     let ad_player = web_player_app.getElementsByClassName("AdPlayer")[0];
+    let video_player = document.getElementById("web-player-app");
+
+
+    let observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.type == "childList") {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.className == "AdUnitView") {
+                        // Adds are running
+                        adsAreRunning()
+                    }
+                });
+                mutation.removedNodes.forEach((node) => {
+                    if (node.className == "AdUnitView") {
+                        // Adds are over
+                        adsAreOver()
+                    }
+                })
+            }
+        });
+
+    });
+
+    // Configure the observer:
+    var config = {
+        childList: true,
+        subtree: true
+    };
+
+    observer.observe(video_player, config)
 
     // watch for a hulu specific class change
-    new ClassWatcher(ad_player, 'AdPlayer--hidden', classAdded, classRemoved)
+    // new ClassWatcher(ad_player, 'AdPlayer--hidden', adsAreRunning, adsAreOver)
 }
 
 /**
  * The ClassWatcher detected, that an ad is running
  * muting the tab
  */
-function classAdded() {
+function adsAreRunning() {
     info("Ad is running!")
     muteTab()
 }
@@ -68,7 +98,7 @@ function classAdded() {
  * The ClassWatcher detected, that an ad has stopped running
  * unmuting the tab
  */
-function classRemoved() {
+function adsAreOver() {
     info("Ads are over, Pheww!")
     unMuteTab()
 }
